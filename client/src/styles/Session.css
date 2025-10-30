@@ -13,6 +13,13 @@
   animation: spin 1s linear infinite;
 }
 
+.waiting-hint {
+  font-size: 1rem;
+  color: var(--text-light);
+  opacity: 0.8;
+  margin-top: 0.5rem;
+}
+
 .session-container {
   min-height: 100vh;
   padding: 2rem;

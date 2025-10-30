@@ -5,6 +5,7 @@ import { Dice } from '../components/Dice';
 import { Counter } from '../components/Counter';
 import { RollTimeline } from '../components/RollTimeline';
 import { ParticipantList } from '../components/ParticipantList';
+import { WaitingRoom } from '../components/WaitingRoom';
 import '../styles/Session.css';
 
 interface SessionProps {
@@ -69,6 +70,14 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
     }
   };
 
+  const handleAcceptParticipant = (participantId: string) => {
+    socket.emit('accept-participant', participantId);
+  };
+
+  const handleAcceptAll = () => {
+    socket.emit('accept-all-participants');
+  };
+
   if (!sessionState) {
     return (
       <div className="session-loading">
@@ -80,7 +89,19 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
 
   const isHost = sessionState.host === mySocketId;
   const myParticipant = sessionState.participants.find(p => p.id === mySocketId);
+  const isWaiting = sessionState.waitingParticipants.find(p => p.id === mySocketId);
   const myPersonalCount = myParticipant?.rollCount || 0;
+
+  // If user is in waiting room (not host and not accepted)
+  if (isWaiting && !isHost) {
+    return (
+      <div className="session-loading">
+        <div className="loading-spinner">🎲</div>
+        <p>Aguardando aprovação do anfitrião...</p>
+        <p className="waiting-hint">O anfitrião precisa aceitar sua entrada na sessão</p>
+      </div>
+    );
+  }
 
   return (
     <div className="session-container">
@@ -103,6 +124,14 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
 
       <div className="session-layout">
         <div className="main-area">
+          {isHost && (
+            <WaitingRoom
+              waitingParticipants={sessionState.waitingParticipants}
+              onAcceptParticipant={handleAcceptParticipant}
+              onAcceptAll={handleAcceptAll}
+            />
+          )}
+
           <Counter
             totalCount={sessionState.totalRollCount}
             personalCount={myPersonalCount}

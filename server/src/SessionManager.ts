@@ -15,11 +15,13 @@ export class SessionManager {
       nickname: hostNickname,
       isHost: true,
       rollCount: 0,
+      isAccepted: true,
     };
 
     const state: SessionState = {
       sessionId,
       participants: [host],
+      waitingParticipants: [],
       rollHistory: [],
       totalRollCount: 0,
       host: hostId,
@@ -45,18 +47,73 @@ export class SessionManager {
     const existingParticipant = session.state.participants.find(
       p => p.id === participantId
     );
+    const existingWaiting = session.state.waitingParticipants.find(
+      p => p.id === participantId
+    );
 
-    if (!existingParticipant) {
+    if (!existingParticipant && !existingWaiting) {
       const participant: Participant = {
         id: participantId,
         nickname,
         isHost: false,
         rollCount: 0,
+        isAccepted: false,
       };
 
-      session.state.participants.push(participant);
-      console.log(`${nickname} joined session ${sessionId}`);
+      // Add to waiting list instead of participants
+      session.state.waitingParticipants.push(participant);
+      console.log(`${nickname} joined session ${sessionId} (waiting for approval)`);
     }
+
+    return true;
+  }
+
+  acceptParticipant(sessionId: string, participantId: string, requesterId: string): boolean {
+    const session = this.sessions.get(sessionId);
+
+    if (!session) return false;
+
+    // Only host can accept participants
+    if (session.state.host !== requesterId) {
+      return false;
+    }
+
+    const participantIndex = session.state.waitingParticipants.findIndex(
+      p => p.id === participantId
+    );
+
+    if (participantIndex === -1) {
+      return false;
+    }
+
+    // Move participant from waiting to active participants
+    const participant = session.state.waitingParticipants[participantIndex];
+    participant.isAccepted = true;
+    session.state.waitingParticipants.splice(participantIndex, 1);
+    session.state.participants.push(participant);
+
+    console.log(`${participant.nickname} accepted into session ${sessionId}`);
+    return true;
+  }
+
+  acceptAllParticipants(sessionId: string, requesterId: string): boolean {
+    const session = this.sessions.get(sessionId);
+
+    if (!session) return false;
+
+    // Only host can accept participants
+    if (session.state.host !== requesterId) {
+      return false;
+    }
+
+    // Move all waiting participants to active participants
+    session.state.waitingParticipants.forEach(participant => {
+      participant.isAccepted = true;
+      session.state.participants.push(participant);
+    });
+
+    console.log(`All ${session.state.waitingParticipants.length} waiting participants accepted into session ${sessionId}`);
+    session.state.waitingParticipants = [];
 
     return true;
   }
@@ -67,6 +124,9 @@ export class SessionManager {
     if (!session) return;
 
     session.state.participants = session.state.participants.filter(
+      p => p.id !== participantId
+    );
+    session.state.waitingParticipants = session.state.waitingParticipants.filter(
       p => p.id !== participantId
     );
 

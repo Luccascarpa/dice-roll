@@ -87,6 +87,40 @@ io.on('connection', (socket) => {
     }
   });
 
+  // Accept Participant
+  socket.on('accept-participant', (participantId: string) => {
+    const sessionId = socketToSession.get(socket.id);
+    if (!sessionId) return;
+
+    const success = sessionManager.acceptParticipant(sessionId, participantId, socket.id);
+
+    if (success) {
+      const state = sessionManager.getSessionState(sessionId);
+      if (state) {
+        io.to(sessionId).emit('session-state', state);
+      }
+    } else {
+      socket.emit('error', 'Failed to accept participant');
+    }
+  });
+
+  // Accept All Participants
+  socket.on('accept-all-participants', () => {
+    const sessionId = socketToSession.get(socket.id);
+    if (!sessionId) return;
+
+    const success = sessionManager.acceptAllParticipants(sessionId, socket.id);
+
+    if (success) {
+      const state = sessionManager.getSessionState(sessionId);
+      if (state) {
+        io.to(sessionId).emit('session-state', state);
+      }
+    } else {
+      socket.emit('error', 'Failed to accept participants');
+    }
+  });
+
   // Reset Counter
   socket.on('reset-counter', () => {
     const sessionId = socketToSession.get(socket.id);

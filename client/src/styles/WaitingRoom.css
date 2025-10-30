@@ -1,0 +1,69 @@
+.waiting-room {
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+}
+
+.waiting-room-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.waiting-room-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.waiting-count {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.waiting-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.waiting-participant {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.waiting-nickname {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.button-small {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.accept-all-button {
+  width: 100%;
+  background: white;
+  color: #667eea;
+  font-weight: 600;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.accept-all-button:hover:not(:disabled) {
+  background: #f0f0f0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

@@ -3,6 +3,7 @@ export interface Participant {
   nickname: string;
   isHost: boolean;
   rollCount: number;
+  isAccepted: boolean;
 }
 
 export interface DiceRoll {
@@ -15,6 +16,7 @@ export interface DiceRoll {
 export interface SessionState {
   sessionId: string;
   participants: Participant[];
+  waitingParticipants: Participant[];
   rollHistory: DiceRoll[];
   totalRollCount: number;
   host: string;
