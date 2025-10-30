@@ -45,6 +45,11 @@ export const RollTimeline: React.FC<RollTimelineProps> = ({ rollHistory }) => {
         ) : (
           sortedRolls.map((roll, index) => (
             <div key={`${roll.timestamp}-${index}`} className="timeline-item">
+              <img
+                src={`/avatars/${roll.rollerAvatar}`}
+                alt={roll.rollerNickname}
+                className="timeline-avatar"
+              />
               <div className="timeline-dice-container">
                 {renderDiceFace(roll.value)}
               </div>

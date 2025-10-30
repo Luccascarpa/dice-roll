@@ -27,7 +27,14 @@ export const WaitingRoom: React.FC<WaitingRoomProps> = ({
       <div className="waiting-list">
         {waitingParticipants.map((participant) => (
           <div key={participant.id} className="waiting-participant">
-            <span className="waiting-nickname">👤 {participant.nickname}</span>
+            <div className="waiting-participant-info">
+              <img
+                src={`/avatars/${participant.avatar}`}
+                alt={participant.nickname}
+                className="waiting-avatar"
+              />
+              <span className="waiting-nickname">{participant.nickname}</span>
+            </div>
             <button
               className="button button-small button-primary"
               onClick={() => onAcceptParticipant(participant.id)}
@@ -37,7 +44,6 @@ export const WaitingRoom: React.FC<WaitingRoomProps> = ({
           </div>
         ))}
       </div>
-
       {waitingParticipants.length > 1 && (
         <button
           className="button button-primary accept-all-button"

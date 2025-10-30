@@ -15,8 +15,15 @@ export const ParticipantList: React.FC<ParticipantListProps> = ({ participants }
       <div className="participant-grid">
         {participants.map((participant) => (
           <div key={participant.id} className="participant-item">
-            <span className="participant-name">{participant.nickname}</span>
-            {participant.isHost && <span className="host-badge">Anfitrião</span>}
+            <img
+              src={`/avatars/${participant.avatar}`}
+              alt={participant.nickname}
+              className="participant-avatar"
+            />
+            <div className="participant-info">
+              <span className="participant-name">{participant.nickname}</span>
+              {participant.isHost && <span className="host-badge">Anfitrião</span>}
+            </div>
           </div>
         ))}
       </div>

@@ -1,25 +1,27 @@
 import React, { useState } from 'react';
+import { AvatarSelector } from '../components/AvatarSelector';
 import '../styles/Home.css';
 
 interface HomeProps {
-  onCreateSession: (nickname: string) => void;
-  onJoinSession: (sessionId: string, nickname: string) => void;
+  onCreateSession: (nickname: string, avatar: string) => void;
+  onJoinSession: (sessionId: string, nickname: string, avatar: string) => void;
 }
 
 export const Home: React.FC<HomeProps> = ({ onCreateSession, onJoinSession }) => {
   const [nickname, setNickname] = useState('');
   const [sessionId, setSessionId] = useState('');
+  const [avatar, setAvatar] = useState('panda.png');
   const [mode, setMode] = useState<'menu' | 'create' | 'join'>('menu');
 
   const handleCreate = () => {
     if (nickname.trim()) {
-      onCreateSession(nickname.trim());
+      onCreateSession(nickname.trim(), avatar);
     }
   };
 
   const handleJoin = () => {
     if (nickname.trim() && sessionId.trim()) {
-      onJoinSession(sessionId.trim(), nickname.trim());
+      onJoinSession(sessionId.trim(), nickname.trim(), avatar);
     }
   };
 
@@ -56,13 +58,14 @@ export const Home: React.FC<HomeProps> = ({ onCreateSession, onJoinSession }) =>
             <h2 className="form-title">Criar Sessão</h2>
             <input
               type="text"
-              className="input mb-3"
+              className="input mb-2"
               placeholder="Digite seu apelido"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               maxLength={20}
               onKeyPress={(e) => e.key === 'Enter' && handleCreate()}
             />
+            <AvatarSelector selectedAvatar={avatar} onSelect={setAvatar} />
             <button
               className="button button-primary mb-2"
               onClick={handleCreate}
@@ -92,13 +95,14 @@ export const Home: React.FC<HomeProps> = ({ onCreateSession, onJoinSession }) =>
             />
             <input
               type="text"
-              className="input mb-3"
+              className="input mb-2"
               placeholder="Seu apelido"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               maxLength={20}
               onKeyPress={(e) => e.key === 'Enter' && handleJoin()}
             />
+            <AvatarSelector selectedAvatar={avatar} onSelect={setAvatar} />
             <button
               className="button button-primary mb-2"
               onClick={handleJoin}

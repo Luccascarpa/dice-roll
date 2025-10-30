@@ -1,6 +1,7 @@
 export interface Participant {
   id: string;
   nickname: string;
+  avatar: string;
   isHost: boolean;
   rollCount: number;
   isAccepted: boolean;
@@ -10,6 +11,7 @@ export interface DiceRoll {
   value: number;
   rollerId: string;
   rollerNickname: string;
+  rollerAvatar: string;
   timestamp: number;
 }
 

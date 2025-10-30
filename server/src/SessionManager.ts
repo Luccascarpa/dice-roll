@@ -7,12 +7,13 @@ export class SessionManager {
     return Math.random().toString(36).substring(2, 8).toUpperCase();
   }
 
-  createSession(hostId: string, hostNickname: string): string {
+  createSession(hostId: string, hostNickname: string, hostAvatar: string): string {
     const sessionId = this.generateSessionId();
 
     const host: Participant = {
       id: hostId,
       nickname: hostNickname,
+      avatar: hostAvatar,
       isHost: true,
       rollCount: 0,
       isAccepted: true,
@@ -36,7 +37,7 @@ export class SessionManager {
     return sessionId;
   }
 
-  joinSession(sessionId: string, participantId: string, nickname: string): boolean {
+  joinSession(sessionId: string, participantId: string, nickname: string, avatar: string): boolean {
     const session = this.sessions.get(sessionId);
 
     if (!session) {
@@ -55,6 +56,7 @@ export class SessionManager {
       const participant: Participant = {
         id: participantId,
         nickname,
+        avatar,
         isHost: false,
         rollCount: 0,
         isAccepted: false,
@@ -154,6 +156,7 @@ export class SessionManager {
       value,
       rollerId,
       rollerNickname: roller.nickname,
+      rollerAvatar: roller.avatar,
       timestamp: Date.now(),
     };
 

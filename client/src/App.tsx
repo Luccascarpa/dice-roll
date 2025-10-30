@@ -34,15 +34,15 @@ function App() {
     };
   }, [socket]);
 
-  const handleCreateSession = (nickname: string) => {
+  const handleCreateSession = (nickname: string, avatar: string) => {
     if (socket) {
-      socket.emit('create-session', nickname);
+      socket.emit('create-session', { nickname, avatar });
     }
   };
 
-  const handleJoinSession = (sessionId: string, nickname: string) => {
+  const handleJoinSession = (sessionId: string, nickname: string, avatar: string) => {
     if (socket) {
-      socket.emit('join-session', { sessionId, nickname });
+      socket.emit('join-session', { sessionId, nickname, avatar });
     }
   };
 

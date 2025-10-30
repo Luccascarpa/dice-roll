@@ -1,0 +1,72 @@
+.avatar-selector {
+  margin-bottom: 1.5rem;
+}
+
+.avatar-label {
+  display: block;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: 0.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.avatar-option {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.2s ease;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-option:hover {
+  transform: scale(1.1);
+  border-color: var(--primary-blue);
+}
+
+.avatar-option.selected {
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.2);
+  transform: scale(1.05);
+}
+
+.avatar-option img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Scrollbar styling */
+.avatar-grid::-webkit-scrollbar {
+  width: 6px;
+}
+
+.avatar-grid::-webkit-scrollbar-track {
+  background: #e0e0e0;
+  border-radius: 3px;
+}
+
+.avatar-grid::-webkit-scrollbar-thumb {
+  background: var(--primary-blue);
+  border-radius: 3px;
+}
+
+.avatar-grid::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-purple);
+}

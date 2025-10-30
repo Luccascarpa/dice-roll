@@ -28,8 +28,8 @@ io.on('connection', (socket) => {
   console.log(`Client connected: ${socket.id}`);
 
   // Create Session
-  socket.on('create-session', (nickname: string) => {
-    const sessionId = sessionManager.createSession(socket.id, nickname);
+  socket.on('create-session', ({ nickname, avatar }: { nickname: string; avatar: string }) => {
+    const sessionId = sessionManager.createSession(socket.id, nickname, avatar);
     socketToSession.set(socket.id, sessionId);
 
     socket.join(sessionId);
@@ -42,13 +42,13 @@ io.on('connection', (socket) => {
   });
 
   // Join Session
-  socket.on('join-session', ({ sessionId, nickname }: { sessionId: string; nickname: string }) => {
+  socket.on('join-session', ({ sessionId, nickname, avatar }: { sessionId: string; nickname: string; avatar: string }) => {
     if (!sessionManager.sessionExists(sessionId)) {
       socket.emit('error', 'Session not found');
       return;
     }
 
-    const success = sessionManager.joinSession(sessionId, socket.id, nickname);
+    const success = sessionManager.joinSession(sessionId, socket.id, nickname, avatar);
 
     if (success) {
       socketToSession.set(socket.id, sessionId);

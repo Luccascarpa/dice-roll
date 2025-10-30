@@ -43,11 +43,27 @@
   backdrop-filter: blur(10px);
 }
 
+.waiting-participant-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.waiting-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid white;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
 .waiting-nickname {
   font-weight: 600;
   font-size: 1rem;
   color: white;
-  flex: 1;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

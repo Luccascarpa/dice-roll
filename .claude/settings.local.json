@@ -14,7 +14,10 @@
       "Bash(git branch:*)",
       "Bash(git push:*)",
       "Bash(git remote remove:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)"
     ],
     "deny": [],
     "ask": []
