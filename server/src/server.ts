@@ -33,11 +33,11 @@ io.on('connection', (socket) => {
     socketToSession.set(socket.id, sessionId);
 
     socket.join(sessionId);
-    socket.emit('session-created', sessionId);
 
     const state = sessionManager.getSessionState(sessionId);
     if (state) {
-      io.to(sessionId).emit('session-state', state);
+      socket.emit('session-created', sessionId);
+      socket.emit('session-state', state);
     }
   });
 
@@ -53,11 +53,15 @@ io.on('connection', (socket) => {
     if (success) {
       socketToSession.set(socket.id, sessionId);
       socket.join(sessionId);
-      socket.emit('session-joined', sessionId);
 
       const state = sessionManager.getSessionState(sessionId);
       if (state) {
-        io.to(sessionId).emit('session-state', state);
+        // Send session-joined and session-state to the joining client immediately
+        socket.emit('session-joined', sessionId);
+        socket.emit('session-state', state);
+
+        // Notify others in the room about the updated state
+        socket.to(sessionId).emit('session-state', state);
       }
     } else {
       socket.emit('error', 'Failed to join session');
