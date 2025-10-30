@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
-import { SessionState, DiceRoll } from '../types';
+import { SessionState } from '../types';
 import { Dice } from '../components/Dice';
 import { Counter } from '../components/Counter';
 import { Queue } from '../components/Queue';
@@ -24,7 +24,7 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
       setSessionState(state);
     });
 
-    socket.on('dice-rolled', (roll: DiceRoll) => {
+    socket.on('dice-rolled', () => {
       setIsRolling(true);
       setTimeout(() => {
         setIsRolling(false);

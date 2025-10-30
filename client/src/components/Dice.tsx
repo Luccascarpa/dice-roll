@@ -8,7 +8,6 @@ interface DiceProps {
 
 export const Dice: React.FC<DiceProps> = ({ value, isRolling }) => {
   const renderDots = (num: number) => {
-    const dots = [];
     const positions = [
       [], // 0 (not used)
       [[50, 50]], // 1
