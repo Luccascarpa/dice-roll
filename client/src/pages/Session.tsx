@@ -17,22 +17,24 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
   const [sessionState, setSessionState] = useState<SessionState | null>(null);
   const [isRolling, setIsRolling] = useState(false);
   const [showSessionId, setShowSessionId] = useState(false);
-  const [myLastRoll, setMyLastRoll] = useState<DiceRoll | null>(null);
+  const [lastRoll, setLastRoll] = useState<DiceRoll | null>(null);
 
   useEffect(() => {
     socket.on('session-state', (state: SessionState) => {
       setSessionState(state);
+      // Update last roll from history
+      if (state.rollHistory.length > 0) {
+        setLastRoll(state.rollHistory[state.rollHistory.length - 1]);
+      }
     });
 
     socket.on('dice-rolled', (roll: DiceRoll) => {
-      // Only animate if it's my roll
-      if (roll.rollerId === mySocketId) {
-        setIsRolling(true);
-        setMyLastRoll(roll);
-        setTimeout(() => {
-          setIsRolling(false);
-        }, 500);
-      }
+      // Show animation and update dice for all users
+      setIsRolling(true);
+      setLastRoll(roll);
+      setTimeout(() => {
+        setIsRolling(false);
+      }, 500);
     });
 
     return () => {
@@ -50,7 +52,7 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
   const handleResetCounter = () => {
     if (window.confirm('Tem certeza que deseja resetar o contador para 0?')) {
       socket.emit('reset-counter');
-      setMyLastRoll(null);
+      setLastRoll(null);
     }
   };
 
@@ -108,7 +110,7 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
 
           <div className="dice-section card">
             <Dice
-              value={myLastRoll?.value || null}
+              value={lastRoll?.value || null}
               isRolling={isRolling}
             />
 
