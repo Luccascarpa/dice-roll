@@ -13,7 +13,7 @@ const io = new Server(httpServer, {
   cors: {
     origin: [
       'http://localhost:3000',
-      'https://dice-roll-mocha.vercel.app'
+      'https://dice-roll-autou.vercel.app'
     ],
     methods: ['GET', 'POST'],
   },
