@@ -21,23 +21,23 @@ export const Queue: React.FC<QueueProps> = ({
 
   return (
     <div className="queue-container card">
-      <h3 className="queue-title">Roll Queue</h3>
+      <h3 className="queue-title">Fila de Lançamento</h3>
 
       {lastRollerNickname && (
         <div className="last-roller">
-          <span className="last-roller-label">Last roll:</span>
+          <span className="last-roller-label">Último lançamento:</span>
           <span className="last-roller-name">{lastRollerNickname}</span>
         </div>
       )}
 
       <div className="current-roller">
-        <div className="roller-badge current">Current</div>
-        <div className="roller-name">{currentRoller?.nickname || 'Waiting...'}</div>
+        <div className="roller-badge current">Atual</div>
+        <div className="roller-name">{currentRoller?.nickname || 'Aguardando...'}</div>
       </div>
 
       {nextRollers.length > 0 && (
         <div className="next-rollers">
-          <div className="next-label">Up Next:</div>
+          <div className="next-label">Próximos:</div>
           {nextRollers.map((participant, idx) => (
             <div key={participant.id} className="next-roller">
               <span className="next-position">{idx + 1}</span>

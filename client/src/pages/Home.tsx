@@ -26,8 +26,13 @@ export const Home: React.FC<HomeProps> = ({ onCreateSession, onJoinSession }) =>
   return (
     <div className="home-container">
       <div className="home-content">
-        <h1 className="home-title">🎲 Virtual Dice</h1>
-        <p className="home-subtitle">Roll together, see together</p>
+        <div className="logo-container">
+          <svg className="autou-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 10 L90 85 Q50 70 10 85 Z" fill="#FF8C61"/>
+          </svg>
+        </div>
+        <h1 className="home-title">🎲 Dado Virtual</h1>
+        <p className="home-subtitle">Jogue junto, veja junto</p>
 
         {mode === 'menu' && (
           <div className="home-menu">
@@ -35,24 +40,24 @@ export const Home: React.FC<HomeProps> = ({ onCreateSession, onJoinSession }) =>
               className="button button-primary home-button"
               onClick={() => setMode('create')}
             >
-              Create Session
+              Criar Sessão
             </button>
             <button
               className="button button-secondary home-button"
               onClick={() => setMode('join')}
             >
-              Join Session
+              Entrar na Sessão
             </button>
           </div>
         )}
 
         {mode === 'create' && (
           <div className="home-form card">
-            <h2 className="form-title">Create Session</h2>
+            <h2 className="form-title">Criar Sessão</h2>
             <input
               type="text"
               className="input mb-3"
-              placeholder="Enter your nickname"
+              placeholder="Digite seu apelido"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               maxLength={20}
@@ -64,31 +69,31 @@ export const Home: React.FC<HomeProps> = ({ onCreateSession, onJoinSession }) =>
               disabled={!nickname.trim()}
               style={{ width: '100%' }}
             >
-              Create & Host
+              Criar e Hospedar
             </button>
             <button
               className="button-link"
               onClick={() => setMode('menu')}
             >
-              ← Back
+              ← Voltar
             </button>
           </div>
         )}
 
         {mode === 'join' && (
           <div className="home-form card">
-            <h2 className="form-title">Join Session</h2>
+            <h2 className="form-title">Entrar na Sessão</h2>
             <input
               type="text"
               className="input mb-2"
-              placeholder="Session ID"
+              placeholder="ID da Sessão"
               value={sessionId}
               onChange={(e) => setSessionId(e.target.value)}
             />
             <input
               type="text"
               className="input mb-3"
-              placeholder="Your nickname"
+              placeholder="Seu apelido"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               maxLength={20}
@@ -100,13 +105,13 @@ export const Home: React.FC<HomeProps> = ({ onCreateSession, onJoinSession }) =>
               disabled={!nickname.trim() || !sessionId.trim()}
               style={{ width: '100%' }}
             >
-              Join Session
+              Entrar na Sessão
             </button>
             <button
               className="button-link"
               onClick={() => setMode('menu')}
             >
-              ← Back
+              ← Voltar
             </button>
           </div>
         )}

@@ -14,21 +14,21 @@ export const HostControls: React.FC<HostControlsProps> = ({
 }) => {
   return (
     <div className="host-controls card">
-      <h3 className="controls-title">Host Controls</h3>
+      <h3 className="controls-title">Controles do Anfitrião</h3>
       <div className="controls-buttons">
         <button
           className="button button-primary"
           onClick={onAdvanceRound}
           disabled={disabled}
         >
-          Advance to Next Roller
+          Avançar para Próximo
         </button>
         <button
           className="button button-secondary"
           onClick={onResetCounter}
           disabled={disabled}
         >
-          Reset Counter
+          Resetar Contador
         </button>
       </div>
     </div>

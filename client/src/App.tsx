@@ -56,7 +56,7 @@ function App() {
         fontSize: '1.5rem',
         color: '#718096'
       }}>
-        Connecting to server...
+        Conectando ao servidor...
       </div>
     );
   }

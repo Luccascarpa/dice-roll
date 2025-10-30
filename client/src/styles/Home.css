@@ -11,6 +11,28 @@
   width: 100%;
 }
 
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.autou-logo {
+  width: 80px;
+  height: 80px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
 .home-title {
   font-size: 3.5rem;
   color: var(--primary-blue);

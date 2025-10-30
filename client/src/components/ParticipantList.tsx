@@ -10,13 +10,13 @@ export const ParticipantList: React.FC<ParticipantListProps> = ({ participants }
   return (
     <div className="participant-list card">
       <h3 className="participant-title">
-        Participants ({participants.length})
+        Participantes ({participants.length})
       </h3>
       <div className="participant-grid">
         {participants.map((participant) => (
           <div key={participant.id} className="participant-item">
             <span className="participant-name">{participant.nickname}</span>
-            {participant.isHost && <span className="host-badge">Host</span>}
+            {participant.isHost && <span className="host-badge">Anfitrião</span>}
           </div>
         ))}
       </div>

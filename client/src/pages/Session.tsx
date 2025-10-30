@@ -48,7 +48,7 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
   };
 
   const handleResetCounter = () => {
-    if (window.confirm('Are you sure you want to reset the counter to 0?')) {
+    if (window.confirm('Tem certeza que deseja resetar o contador para 0?')) {
       socket.emit('reset-counter');
     }
   };
@@ -63,7 +63,7 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
     return (
       <div className="session-loading">
         <div className="loading-spinner">🎲</div>
-        <p>Loading session...</p>
+        <p>Carregando sessão...</p>
       </div>
     );
   }
@@ -75,9 +75,14 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
   return (
     <div className="session-container">
       <div className="session-header">
-        <h1 className="session-title">🎲 Virtual Dice</h1>
+        <h1 className="session-title">
+          <svg className="autou-logo-small" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 10 L90 85 Q50 70 10 85 Z" fill="#FF8C61"/>
+          </svg>
+          🎲 Dado Virtual
+        </h1>
         <button className="session-id-button" onClick={handleCopySessionId}>
-          {showSessionId ? 'Copied!' : `Session: ${sessionId}`}
+          {showSessionId ? 'Copiado!' : `Sessão: ${sessionId}`}
         </button>
       </div>
 
@@ -88,7 +93,7 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
           <div className="dice-section card">
             {sessionState.lastRoll && (
               <div className="last-roll-display">
-                Last Roll: <strong>{sessionState.lastRoll.value}</strong> by{' '}
+                Último Lançamento: <strong>{sessionState.lastRoll.value}</strong> por{' '}
                 <strong>{sessionState.lastRoll.rollerNickname}</strong>
               </div>
             )}
@@ -104,13 +109,13 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
                 onClick={handleRollDice}
                 disabled={isRolling}
               >
-                {isRolling ? 'Rolling...' : '🎲 Roll Dice'}
+                {isRolling ? 'Lançando...' : '🎲 Lançar Dado'}
               </button>
             )}
 
             {!isMyTurn && (
               <div className="waiting-message">
-                Waiting for <strong>{currentRoller?.nickname}</strong> to roll...
+                Aguardando <strong>{currentRoller?.nickname}</strong> lançar...
               </div>
             )}
           </div>
