@@ -1,0 +1,47 @@
+.participant-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.participant-title {
+  color: var(--primary-blue);
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.participant-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.participant-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: var(--background);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.participant-item:hover {
+  background: #E9ECEF;
+  transform: scale(1.02);
+}
+
+.participant-name {
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.host-badge {
+  background: var(--accent-orange);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
