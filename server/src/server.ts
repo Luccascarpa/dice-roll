@@ -11,7 +11,10 @@ app.use(cors());
 
 const io = new Server(httpServer, {
   cors: {
-    origin: '*', // Allow all origins for ngrok testing
+    origin: [
+      'http://localhost:3000',
+      'https://dice-roll-mocha.vercel.app'
+    ],
     methods: ['GET', 'POST'],
   },
 });
