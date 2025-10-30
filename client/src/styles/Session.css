@@ -42,6 +42,12 @@
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
+.session-header-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .session-id-button {
   font-family: 'Montserrat', sans-serif;
   background: var(--accent-purple);
@@ -56,6 +62,23 @@
 
 .session-id-button:hover {
   background: #9370DB;
+  transform: translateY(-2px);
+}
+
+.leave-session-button {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--text-light);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.leave-session-button:hover {
+  background: #5a6c7d;
   transform: translateY(-2px);
 }
 

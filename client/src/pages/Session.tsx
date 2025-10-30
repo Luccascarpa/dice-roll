@@ -60,6 +60,13 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
     setTimeout(() => setShowSessionId(false), 2000);
   };
 
+  const handleLeaveSession = () => {
+    if (window.confirm('Tem certeza que deseja sair da sessão?')) {
+      socket.disconnect();
+      window.location.reload();
+    }
+  };
+
   if (!sessionState) {
     return (
       <div className="session-loading">
@@ -82,9 +89,14 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
           </svg>
           🎲 Dado Virtual
         </h1>
-        <button className="session-id-button" onClick={handleCopySessionId}>
-          {showSessionId ? 'Copiado!' : `Sessão: ${sessionId}`}
-        </button>
+        <div className="session-header-actions">
+          <button className="session-id-button" onClick={handleCopySessionId}>
+            {showSessionId ? 'Copiado!' : `Sessão: ${sessionId}`}
+          </button>
+          <button className="leave-session-button" onClick={handleLeaveSession}>
+            ← Sair
+          </button>
+        </div>
       </div>
 
       <div className="session-layout">
