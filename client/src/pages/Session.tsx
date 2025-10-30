@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
-import { SessionState } from '../types';
+import { SessionState, DiceRoll } from '../types';
 import { Dice } from '../components/Dice';
 import { Counter } from '../components/Counter';
-import { Queue } from '../components/Queue';
-import { HostControls } from '../components/HostControls';
+import { RollTimeline } from '../components/RollTimeline';
 import { ParticipantList } from '../components/ParticipantList';
 import '../styles/Session.css';
 
@@ -18,24 +17,29 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
   const [sessionState, setSessionState] = useState<SessionState | null>(null);
   const [isRolling, setIsRolling] = useState(false);
   const [showSessionId, setShowSessionId] = useState(false);
+  const [myLastRoll, setMyLastRoll] = useState<DiceRoll | null>(null);
 
   useEffect(() => {
     socket.on('session-state', (state: SessionState) => {
       setSessionState(state);
     });
 
-    socket.on('dice-rolled', () => {
-      setIsRolling(true);
-      setTimeout(() => {
-        setIsRolling(false);
-      }, 500);
+    socket.on('dice-rolled', (roll: DiceRoll) => {
+      // Only animate if it's my roll
+      if (roll.rollerId === mySocketId) {
+        setIsRolling(true);
+        setMyLastRoll(roll);
+        setTimeout(() => {
+          setIsRolling(false);
+        }, 500);
+      }
     });
 
     return () => {
       socket.off('session-state');
       socket.off('dice-rolled');
     };
-  }, [socket]);
+  }, [socket, mySocketId]);
 
   const handleRollDice = () => {
     if (!isRolling) {
@@ -43,13 +47,10 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
     }
   };
 
-  const handleAdvanceRound = () => {
-    socket.emit('advance-round');
-  };
-
   const handleResetCounter = () => {
     if (window.confirm('Tem certeza que deseja resetar o contador para 0?')) {
       socket.emit('reset-counter');
+      setMyLastRoll(null);
     }
   };
 
@@ -69,8 +70,8 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
   }
 
   const isHost = sessionState.host === mySocketId;
-  const currentRoller = sessionState.participants[sessionState.currentRollerIndex];
-  const isMyTurn = currentRoller?.id === mySocketId;
+  const myParticipant = sessionState.participants.find(p => p.id === mySocketId);
+  const myPersonalCount = myParticipant?.rollCount || 0;
 
   return (
     <div className="session-container">
@@ -88,54 +89,42 @@ export const Session: React.FC<SessionProps> = ({ socket, sessionId, mySocketId 
 
       <div className="session-layout">
         <div className="main-area">
-          <Counter count={sessionState.rollCount} />
+          <Counter
+            totalCount={sessionState.totalRollCount}
+            personalCount={myPersonalCount}
+          />
 
           <div className="dice-section card">
-            {sessionState.lastRoll && (
-              <div className="last-roll-display">
-                Último Lançamento: <strong>{sessionState.lastRoll.value}</strong> por{' '}
-                <strong>{sessionState.lastRoll.rollerNickname}</strong>
-              </div>
-            )}
-
             <Dice
-              value={sessionState.lastRoll?.value || null}
+              value={myLastRoll?.value || null}
               isRolling={isRolling}
             />
 
-            {isMyTurn && (
-              <button
-                className="button button-primary roll-button"
-                onClick={handleRollDice}
-                disabled={isRolling}
-              >
-                {isRolling ? 'Lançando...' : '🎲 Lançar Dado'}
-              </button>
-            )}
-
-            {!isMyTurn && (
-              <div className="waiting-message">
-                Aguardando <strong>{currentRoller?.nickname}</strong> lançar...
-              </div>
-            )}
+            <button
+              className="button button-primary roll-button"
+              onClick={handleRollDice}
+              disabled={isRolling}
+            >
+              {isRolling ? 'Lançando...' : '🎲 Lançar Dado'}
+            </button>
           </div>
 
           <ParticipantList participants={sessionState.participants} />
+
+          {isHost && (
+            <div className="host-controls-inline">
+              <button
+                className="button button-secondary reset-button"
+                onClick={handleResetCounter}
+              >
+                Resetar Contador
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="sidebar">
-          <Queue
-            participants={sessionState.participants}
-            currentRollerIndex={sessionState.currentRollerIndex}
-            lastRollerNickname={sessionState.lastRoll?.rollerNickname}
-          />
-
-          {isHost && (
-            <HostControls
-              onAdvanceRound={handleAdvanceRound}
-              onResetCounter={handleResetCounter}
-            />
-          )}
+          <RollTimeline rollHistory={sessionState.rollHistory} />
         </div>
       </div>
     </div>

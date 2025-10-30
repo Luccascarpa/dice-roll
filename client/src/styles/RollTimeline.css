@@ -1,0 +1,116 @@
+.roll-timeline {
+  height: 100%;
+  max-height: calc(100vh - 4rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-title {
+  color: var(--primary-blue);
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.timeline-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.timeline-empty {
+  text-align: center;
+  color: var(--text-light);
+  padding: 2rem;
+  font-style: italic;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: var(--background);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  animation: slideInRight 0.3s ease;
+}
+
+.timeline-item:hover {
+  background: #E9ECEF;
+  transform: translateX(-4px);
+}
+
+.timeline-dice-container {
+  flex-shrink: 0;
+}
+
+.timeline-dice {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(74, 144, 226, 0.15);
+  position: relative;
+}
+
+.timeline-dice-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--primary-blue);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.timeline-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.timeline-nickname {
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.timeline-time {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  margin-top: 0.25rem;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Scrollbar styling */
+.timeline-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.timeline-list::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 3px;
+}
+
+.timeline-list::-webkit-scrollbar-thumb {
+  background: var(--accent-purple);
+  border-radius: 3px;
+}
+
+.timeline-list::-webkit-scrollbar-thumb:hover {
+  background: #9370DB;
+}

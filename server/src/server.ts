@@ -79,24 +79,7 @@ io.on('connection', (socket) => {
         io.to(sessionId).emit('session-state', state);
       }
     } else {
-      socket.emit('error', 'Not your turn or invalid session');
-    }
-  });
-
-  // Advance Round
-  socket.on('advance-round', () => {
-    const sessionId = socketToSession.get(socket.id);
-    if (!sessionId) return;
-
-    const success = sessionManager.advanceRound(sessionId, socket.id);
-
-    if (success) {
-      const state = sessionManager.getSessionState(sessionId);
-      if (state) {
-        io.to(sessionId).emit('session-state', state);
-      }
-    } else {
-      socket.emit('error', 'Only host can advance round');
+      socket.emit('error', 'Invalid session');
     }
   });
 

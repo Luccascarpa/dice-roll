@@ -14,14 +14,14 @@ export class SessionManager {
       id: hostId,
       nickname: hostNickname,
       isHost: true,
+      rollCount: 0,
     };
 
     const state: SessionState = {
       sessionId,
       participants: [host],
-      currentRollerIndex: 0,
-      rollCount: 0,
-      lastRoll: null,
+      rollHistory: [],
+      totalRollCount: 0,
       host: hostId,
     };
 
@@ -51,6 +51,7 @@ export class SessionManager {
         id: participantId,
         nickname,
         isHost: false,
+        rollCount: 0,
       };
 
       session.state.participants.push(participant);
@@ -69,11 +70,6 @@ export class SessionManager {
       p => p.id !== participantId
     );
 
-    // Adjust current roller index if needed
-    if (session.state.currentRollerIndex >= session.state.participants.length) {
-      session.state.currentRollerIndex = 0;
-    }
-
     // Delete session if empty
     if (session.state.participants.length === 0) {
       this.sessions.delete(sessionId);
@@ -86,10 +82,10 @@ export class SessionManager {
 
     if (!session) return null;
 
-    const currentRoller = session.state.participants[session.state.currentRollerIndex];
+    const roller = session.state.participants.find(p => p.id === rollerId);
 
-    if (!currentRoller || currentRoller.id !== rollerId) {
-      return null; // Not the roller's turn
+    if (!roller) {
+      return null; // Participant not found
     }
 
     const value = Math.floor(Math.random() * 6) + 1;
@@ -97,33 +93,20 @@ export class SessionManager {
     const roll: DiceRoll = {
       value,
       rollerId,
-      rollerNickname: currentRoller.nickname,
+      rollerNickname: roller.nickname,
       timestamp: Date.now(),
     };
 
-    session.state.lastRoll = roll;
-    session.state.rollCount++;
+    // Add to history
+    session.state.rollHistory.push(roll);
 
-    console.log(`${currentRoller.nickname} rolled a ${value} in session ${sessionId}`);
+    // Update counters
+    session.state.totalRollCount++;
+    roller.rollCount++;
+
+    console.log(`${roller.nickname} rolled a ${value} in session ${sessionId}`);
 
     return roll;
-  }
-
-  advanceRound(sessionId: string, requesterId: string): boolean {
-    const session = this.sessions.get(sessionId);
-
-    if (!session) return false;
-
-    // Only host can advance
-    if (session.state.host !== requesterId) {
-      return false;
-    }
-
-    session.state.currentRollerIndex =
-      (session.state.currentRollerIndex + 1) % session.state.participants.length;
-
-    console.log(`Round advanced in session ${sessionId}`);
-    return true;
   }
 
   resetCounter(sessionId: string, requesterId: string): boolean {
@@ -136,7 +119,14 @@ export class SessionManager {
       return false;
     }
 
-    session.state.rollCount = 0;
+    session.state.totalRollCount = 0;
+    session.state.rollHistory = [];
+
+    // Reset all participants' roll counts
+    session.state.participants.forEach(p => {
+      p.rollCount = 0;
+    });
+
     console.log(`Counter reset in session ${sessionId}`);
     return true;
   }

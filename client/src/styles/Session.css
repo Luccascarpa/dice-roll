@@ -61,13 +61,18 @@
 
 .session-layout {
   display: grid;
-  grid-template-columns: 1fr 350px;
+  grid-template-columns: 1fr 400px;
   gap: 2rem;
+  align-items: start;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .session-layout {
     grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    max-height: 500px;
   }
 }
 
@@ -78,27 +83,13 @@
 }
 
 .sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  position: sticky;
+  top: 2rem;
 }
 
 .dice-section {
   text-align: center;
-}
-
-.last-roll-display {
-  background: linear-gradient(135deg, #FFF5F0, #FFE8DC);
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  font-size: 1rem;
-  color: var(--text-dark);
-}
-
-.last-roll-display strong {
-  color: var(--accent-orange);
-  font-weight: 700;
+  padding: 2rem;
 }
 
 .roll-button {
@@ -109,15 +100,23 @@
   font-size: 1.25rem;
 }
 
-.waiting-message {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background: linear-gradient(135deg, #F0F4FF, #E6EEFF);
-  border-radius: 8px;
-  color: var(--text-dark);
-  font-size: 1.1rem;
+.host-controls-inline {
+  display: flex;
+  justify-content: center;
 }
 
-.waiting-message strong {
-  color: var(--primary-blue);
+.reset-button {
+  width: 100%;
+  max-width: 300px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
